@@ -36,33 +36,33 @@ with st.sidebar:
 
     
     
-# 轉成 datetime
-df_raw['time'] = pd.to_datetime(df_raw['time'])
+    # 轉成 datetime
+    df_raw['time'] = pd.to_datetime(df_raw['time'])
 
-# 設 'time' 為 index 並排序
-df_raw = df_raw.set_index('time').sort_index()
+    # 設 'time' 為 index 並排序
+    df_raw = df_raw.set_index('time').sort_index()
 
-# 預設日期範圍
-min_date = df_raw.index.min().date()
-max_date = df_raw.index.max().date()
+    # 預設日期範圍
+    min_date = df_raw.index.min().date()
+    max_date = df_raw.index.max().date()
 
-# 用日期選擇器輸入起訖日期
-start_date = st.date_input("開始日期", min_value=min_date, max_value=max_date, value=min_date)
-end_date = st.date_input("結束日期", min_value=min_date, max_value=max_date, value=max_date)
+    # 用日期選擇器輸入起訖日期
+    start_date = st.date_input("開始日期", min_value=min_date, max_value=max_date, value=min_date)
+    end_date = st.date_input("結束日期", min_value=min_date, max_value=max_date, value=max_date)
 
-if start_date > end_date:
-    st.error("開始日期不可晚於結束日期！")
-    st.stop()
+    if start_date > end_date:
+        st.error("開始日期不可晚於結束日期！")
+        st.stop()
 
-# 將日期轉成 Timestamp
-start_ts = pd.to_datetime(start_date)
-end_ts = pd.to_datetime(end_date)
+    # 將日期轉成 Timestamp
+    start_ts = pd.to_datetime(start_date)
+    end_ts = pd.to_datetime(end_date)
 
-# 篩選資料
-df = df_raw.loc[start_ts:end_ts]
+    # 篩選資料
+    df = df_raw.loc[start_ts:end_ts]
 
-st.write(f"篩選後資料 ({start_date} ~ {end_date}): 共 {len(df)} 筆")
-st.dataframe(df)   
+    st.write(f"篩選後資料 ({start_date} ~ {end_date}): 共 {len(df)} 筆")
+    st.dataframe(df)   
     interval_label = st.selectbox("K棒長度", ["日K", "週K", "月K"])
     interval_map = {"日K": "1d", "週K": "1wk", "月K": "1mo"}
     interval = interval_map[interval_label]
