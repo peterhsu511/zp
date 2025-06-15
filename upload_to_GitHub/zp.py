@@ -36,6 +36,7 @@ with st.sidebar:
 
     
     
+    df_raw['time'] = pd.to_datetime(df_raw['time'])
     df_raw = df_raw.sort_values('time').reset_index(drop=True)
     df_raw.set_index('time', inplace=True)
 
