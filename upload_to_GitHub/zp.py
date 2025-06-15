@@ -36,10 +36,10 @@ with st.sidebar:
 
     
     
-    df_raw['Date'] = pd.to_datetime(df_raw['Date']).dt.date
+    df_raw['time'] = pd.to_datetime(df_raw['time']).dt.date
 
-    min_date = df_raw['Date'].min()
-    max_date = df_raw['Date'].max()
+    min_date = df_raw['time'].min()
+    max_date = df_raw['time'].max()
 
     # 用 date_input 讓使用者選擇日期區間 (會回傳 tuple (start_date, end_date))
     date_range = st.date_input(
@@ -51,7 +51,7 @@ with st.sidebar:
 
     start_date, end_date = date_range
     # 篩選日期區間資料
-    df = df_raw[(df_raw['Date'] >= start_date) & (df_raw['Date'] <= end_date)].copy()
+    df = df_raw[(df_raw['time'] >= start_date) & (df_raw['time'] <= end_date)].copy()
 
     if df.empty:
         st.warning("此日期區間無資料")
