@@ -12,8 +12,8 @@ import numpy as np
 import os
 
 
-st.set_page_config(page_title="多股票技術分析平台", layout="wide")
-st.title("📈 金融商品多股票技術分析平台")
+st.set_page_config(page_title="股票技術分析平台", layout="wide")
+st.title("金融商品股票技術分析平台")
 
 # 股票清單 (Excel 檔案名)
 stock_list = {
@@ -34,10 +34,10 @@ with st.sidebar:
     file_path = os.path.join(base_dir, stock_list[selected_stock])
     df_raw = pd.read_excel(file_path)
 
-    # 假設你的日期欄名是 'Date'，轉成 datetime 並排序
-    df_raw['Date'] = pd.to_datetime(df_raw['Date'])
-    df_raw = df_raw.sort_values('Date').reset_index(drop=True)
-    df_raw.set_index('Date', inplace=True)
+    
+    
+    df_raw = df_raw.sort_values('time').reset_index(drop=True)
+    df_raw.set_index('time', inplace=True)
 
     min_date = df_raw.index.min()
     max_date = df_raw.index.max()
@@ -131,7 +131,7 @@ if df.empty:
 else:
     df = compute_indicators(df)
 
-    tabs = st.tabs(["📊 K線與MA", "📈 RSI與布林通道", "💹 MACD與策略", "📉 累積報酬與成交量"])
+    tabs = st.tabs(["K線與MA", "RSI與布林通道", "MACD與策略", "累積報酬與成交量"])
 
     with tabs[0]:
         fig = go.Figure()
