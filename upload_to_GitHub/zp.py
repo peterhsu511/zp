@@ -36,14 +36,26 @@ with st.sidebar:
 
     
     
-    df_raw['time'] = pd.to_datetime(df_raw['time'])
-    df_raw = df_raw.sort_values('time').reset_index(drop=True)
-    df_raw.set_index('time', inplace=True)
+    df_raw['Date'] = pd.to_datetime(df_raw['Date']).dt.date
 
-    min_date = df_raw.index.min()
-    max_date = df_raw.index.max()
-    date_range = st.slider("選擇日期區間", min_value=min_date, max_value=max_date, value=(min_date, max_date))
+    min_date = df_raw['Date'].min()
+    max_date = df_raw['Date'].max()
 
+    # 用 date_input 讓使用者選擇日期區間 (會回傳 tuple (start_date, end_date))
+    date_range = st.date_input(
+        "選擇日期區間",
+        value=(min_date, max_date),
+        min_value=min_date,
+        max_value=max_date
+    )
+
+    start_date, end_date = date_range
+    # 篩選日期區間資料
+    df = df_raw[(df_raw['Date'] >= start_date) & (df_raw['Date'] <= end_date)].copy()
+
+    if df.empty:
+        st.warning("此日期區間無資料")
+        st.stop()
     interval_label = st.selectbox("K棒長度", ["日K", "週K", "月K"])
     interval_map = {"日K": "1d", "週K": "1wk", "月K": "1mo"}
     interval = interval_map[interval_label]
