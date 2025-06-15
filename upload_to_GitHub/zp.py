@@ -9,6 +9,8 @@ import streamlit as st
 import pandas as pd
 import plotly.graph_objects as go
 import numpy as np
+import os
+
 
 st.set_page_config(page_title="多股票技術分析平台", layout="wide")
 st.title("📈 金融商品多股票技術分析平台")
@@ -28,7 +30,10 @@ with st.sidebar:
     selected_stock = st.selectbox("選擇股票", list(stock_list.keys()))
 
     # 讀Excel並取得可用日期範圍
-    df_raw = pd.read_excel(stock_list[selected_stock])
+    base_dir = os.path.dirname(__file__)  # 取得當前 script 所在資料夾路徑
+    file_path = os.path.join(base_dir, stock_list[selected_stock])
+    df_raw = pd.read_excel(file_path)
+
     # 假設你的日期欄名是 'Date'，轉成 datetime 並排序
     df_raw['Date'] = pd.to_datetime(df_raw['Date'])
     df_raw = df_raw.sort_values('Date').reset_index(drop=True)
